@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTrackerData();
     loadMedications();
     loadWellnessArticles();
+    init3DCardTilt();
+    // Pre-initialize 3D scene when Three.js is ready
+    setTimeout(() => {
+        initThreeDScene();
+    }, 200);
 });
 
 // ================= NAVIGATION =================
@@ -28,6 +33,13 @@ function initNavigation() {
             const activePane = document.getElementById(`tab-${targetTab}`);
             if (activePane) {
                 activePane.classList.add("active");
+            }
+
+            if (targetTab === "dashboard") {
+                setTimeout(() => {
+                    initThreeDScene();
+                    onThreeResize();
+                }, 60);
             }
         });
     });
@@ -115,8 +127,13 @@ function appendChatMessage(sender, text, animate = true, suggestions = [], isEme
     msgDiv.className = `message ${sender === "user" ? "user-msg" : "bot-msg"}`;
 
     const avatarDiv = document.createElement("div");
-    avatarDiv.className = "msg-avatar";
-    avatarDiv.textContent = sender === "user" ? "👤" : "🤖";
+    if (sender === "user") {
+        avatarDiv.className = "msg-avatar";
+        avatarDiv.textContent = "👤";
+    } else {
+        avatarDiv.className = "msg-avatar msg-avatar-3d";
+        avatarDiv.innerHTML = '<img src="/static/images/carebot_3d_avatar.jpg" alt="CareBot 3D">';
+    }
 
     const contentDiv = document.createElement("div");
     contentDiv.className = "msg-content";
@@ -656,4 +673,271 @@ function escapeHtml(text) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+// ================= INTERACTIVE 3D VITALITY ENGINE (THREE.JS) =================
+
+let threeScene, threeCamera, threeRenderer, heartMesh, particlesMesh;
+let heartBPM = 72;
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+let currentRotation = { x: 0.1, y: -0.2 };
+let targetRotation = { x: 0.1, y: -0.2 };
+let isWireframe = false;
+let isThreeInitialized = false;
+let animationClock;
+
+function initThreeDScene() {
+    const container = document.getElementById("threeHeartContainer");
+    if (!container || isThreeInitialized) return;
+    if (typeof THREE === "undefined") {
+        setTimeout(initThreeDScene, 100);
+        return;
+    }
+
+    const width = container.clientWidth || 320;
+    const height = container.clientHeight || 180;
+
+    // 1. Scene & Camera
+    threeScene = new THREE.Scene();
+    threeCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    threeCamera.position.set(0, 0, 110);
+
+    // 2. WebGL Renderer
+    try {
+        threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch (e) {
+        console.warn("WebGL not supported or context error", e);
+        return;
+    }
+
+    threeRenderer.setSize(width, height);
+    threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const loader = document.getElementById("canvasLoading");
+    if (loader) loader.remove();
+    container.appendChild(threeRenderer.domElement);
+
+    // 3. Anatomical Heart Geometry
+    const x = 0, y = 0;
+    const heartShape = new THREE.Shape();
+    heartShape.moveTo( x + 15, y + 15 );
+    heartShape.bezierCurveTo( x + 15, y + 15, x + 12, y, x, y );
+    heartShape.bezierCurveTo( x - 20, y, x - 20, y + 25, x - 20, y + 25 );
+    heartShape.bezierCurveTo( x - 20, y + 42, x - 5, y + 58, x + 15, y + 72 );
+    heartShape.bezierCurveTo( x + 35, y + 58, x + 50, y + 42, x + 50, y + 25 );
+    heartShape.bezierCurveTo( x + 50, y + 25, x + 50, y, x + 30, y );
+    heartShape.bezierCurveTo( x + 20, y, x + 15, y + 15, x + 15, y + 15 );
+
+    const extrudeSettings = {
+        depth: 12,
+        bevelEnabled: true,
+        bevelSegments: 4,
+        steps: 2,
+        bevelSize: 3,
+        bevelThickness: 3
+    };
+
+    const heartGeometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+    heartGeometry.center();
+    heartGeometry.rotateZ(Math.PI); // Point apex downward
+
+    const heartMaterial = new THREE.MeshPhongMaterial({
+        color: 0xef4444,
+        emissive: 0x881337,
+        specular: 0xffa4b3,
+        shininess: 90,
+        flatShading: true
+    });
+
+    heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
+    heartMesh.scale.set(0.68, 0.68, 0.68);
+    threeScene.add(heartMesh);
+
+    // 4. Surrounding Vitality Particles Cloud
+    const particleCount = 140;
+    const particleGeometry = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+        const radius = 35 + Math.random() * 22;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos((Math.random() * 2) - 1);
+        particlePositions[i] = radius * Math.sin(phi) * Math.cos(theta);
+        particlePositions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+        particlePositions[i + 2] = radius * Math.cos(phi);
+    }
+    particleGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
+
+    const particleMaterial = new THREE.PointsMaterial({
+        color: 0x38bdf8,
+        size: 2.0,
+        transparent: true,
+        opacity: 0.85
+    });
+
+    particlesMesh = new THREE.Points(particleGeometry, particleMaterial);
+    threeScene.add(particlesMesh);
+
+    // 5. Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    threeScene.add(ambientLight);
+
+    const redLight = new THREE.PointLight(0xff4444, 2.2, 200);
+    redLight.position.set(40, 50, 60);
+    threeScene.add(redLight);
+
+    const blueLight = new THREE.PointLight(0x0284c7, 1.8, 200);
+    blueLight.position.set(-50, -40, 50);
+    threeScene.add(blueLight);
+
+    // 6. Interactive Mouse Drag Listeners
+    container.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+
+        targetRotation.y += deltaX * 0.012;
+        targetRotation.x += deltaY * 0.012;
+
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener("mouseup", () => {
+        isDragging = false;
+    });
+
+    // Touch Support for Mobile Dragging
+    container.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 1) {
+            isDragging = true;
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (e) => {
+        if (!isDragging || e.touches.length !== 1) return;
+        const deltaX = e.touches[0].clientX - previousMousePosition.x;
+        const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+        targetRotation.y += deltaX * 0.012;
+        targetRotation.x += deltaY * 0.012;
+
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: true });
+
+    window.addEventListener("touchend", () => {
+        isDragging = false;
+    });
+
+    window.addEventListener("resize", onThreeResize);
+    animationClock = new THREE.Clock();
+    isThreeInitialized = true;
+    animateThree();
+}
+
+function onThreeResize() {
+    const container = document.getElementById("threeHeartContainer");
+    if (!container || !threeRenderer || !threeCamera) return;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    if (width === 0 || height === 0) return;
+    threeCamera.aspect = width / height;
+    threeCamera.updateProjectionMatrix();
+    threeRenderer.setSize(width, height);
+}
+
+function animateThree() {
+    requestAnimationFrame(animateThree);
+    if (!threeRenderer || !threeScene || !threeCamera) return;
+
+    const elapsedTime = animationClock.getElapsedTime();
+
+    // Dual-beat "Lub-Dub" Heartbeat scale oscillation synchronized with heartBPM
+    const beatPeriod = 60 / heartBPM;
+    const cycleTime = (elapsedTime % beatPeriod) / beatPeriod;
+
+    let pulseScale = 1.0;
+    if (cycleTime < 0.18) {
+        // First contraction (atrial/ventricular systole)
+        pulseScale = 1.0 + Math.sin((cycleTime / 0.18) * Math.PI) * 0.18;
+    } else if (cycleTime > 0.22 && cycleTime < 0.40) {
+        // Secondary contraction
+        pulseScale = 1.0 + Math.sin(((cycleTime - 0.22) / 0.18) * Math.PI) * 0.10;
+    }
+
+    if (heartMesh) {
+        // Smooth rotation damping
+        currentRotation.x += (targetRotation.x - currentRotation.x) * 0.08;
+        currentRotation.y += (targetRotation.y - currentRotation.y) * 0.08;
+
+        // Subtle continuous rotation when idle
+        if (!isDragging) {
+            targetRotation.y += 0.005;
+        }
+
+        heartMesh.rotation.x = currentRotation.x;
+        heartMesh.rotation.y = currentRotation.y;
+        heartMesh.scale.set(0.68 * pulseScale, 0.68 * pulseScale, 0.68 * pulseScale);
+    }
+
+    if (particlesMesh) {
+        particlesMesh.rotation.y += 0.008;
+        particlesMesh.rotation.x = Math.sin(elapsedTime * 0.4) * 0.15;
+    }
+
+    threeRenderer.render(threeScene, threeCamera);
+}
+
+// Global functions for inline HTML controls
+window.changeHeartBPM = function(val) {
+    heartBPM = parseInt(val, 10);
+    const display = document.getElementById("bpmDisplay");
+    if (display) {
+        display.textContent = `${heartBPM} BPM`;
+    }
+};
+
+window.resetHeartAngle = function() {
+    targetRotation = { x: 0.1, y: -0.2 };
+    currentRotation = { x: 0.1, y: -0.2 };
+    heartBPM = 72;
+    const slider = document.getElementById("bpmSlider");
+    if (slider) slider.value = 72;
+    window.changeHeartBPM(72);
+    showToast("3D Heart view reset to default");
+};
+
+window.toggleWireframe = function() {
+    if (!heartMesh) return;
+    isWireframe = !isWireframe;
+    heartMesh.material.wireframe = isWireframe;
+    showToast(isWireframe ? "Wireframe Mesh Activated" : "Smooth Shading Activated");
+};
+
+// 3D Card Tilt Interaction
+function init3DCardTilt() {
+    const cards = document.querySelectorAll(".tracker-card, .calc-card, .article-card");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = -((y - centerY) / centerY) * 4;
+            const rotateY = ((x - centerX) / centerX) * 4;
+
+            card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+            card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)";
+        });
+    });
 }

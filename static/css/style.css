@@ -1486,4 +1486,346 @@ body {
     .meds-layout {
         grid-template-columns: 1fr;
     }
+    .dashboard-hero-3d {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ==========================================================================
+   3D VISUALS & MODERN ANIMATION SYSTEM
+   ========================================================================== */
+
+/* 3D Floating Avatar */
+.bot-avatar-3d {
+    overflow: hidden;
+    background: transparent !important;
+    border: 2px solid var(--primary);
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+    animation: floatLevitate 3.5s ease-in-out infinite;
+}
+
+.avatar-3d-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.msg-avatar-3d {
+    overflow: hidden;
+    border: 2px solid var(--primary-light);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.2);
+    animation: floatLevitate 4s ease-in-out infinite;
+}
+
+.msg-avatar-3d img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.title-with-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge-3d {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, #0d9488, #0284c7);
+    color: white;
+    box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
+    display: inline-block;
+}
+
+/* 3D Dashboard Hero Banner */
+.dashboard-hero-3d {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 22px;
+    background: linear-gradient(145deg, #ffffff, #f0fdfa);
+    border: 1px solid #ccfbf1;
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    margin-bottom: 28px;
+    box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-hero-3d::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(13, 148, 136, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-3d-left {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.hero-3d-banner-img-wrap {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    height: 150px;
+}
+
+.hero-3d-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.hero-3d-banner-img-wrap:hover .hero-3d-img {
+    transform: scale(1.03);
+}
+
+.hero-overlay-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(6px);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    background-color: #10b981;
+    border-radius: 50%;
+    animation: pulseGlow 1.5s infinite;
+}
+
+.hero-3d-content h3 {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.hero-3d-content p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.hero-mini-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mini-badge {
+    background: #ffffff;
+    border: 1px solid #99f6e4;
+    color: #0f766e;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+/* Interactive 3D Canvas Box (Right) */
+.hero-3d-right {
+    background: #0f172a;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.canvas-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(30, 41, 59, 0.8);
+    border-bottom: 1px solid #334155;
+}
+
+.ecg-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #f87171;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.88rem;
+}
+
+.heart-icon-anim {
+    display: inline-block;
+    animation: heartBeatScale 1s ease-in-out infinite;
+}
+
+.rotate-hint {
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+
+.three-canvas-container {
+    width: 100%;
+    height: 180px;
+    position: relative;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+}
+
+.three-canvas-container:active {
+    cursor: grabbing;
+}
+
+.canvas-loading {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+.canvas-controls-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(30, 41, 59, 0.9);
+    border-top: 1px solid #334155;
+    gap: 10px;
+}
+
+.bpm-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.bpm-control input[type=range] {
+    width: 70px;
+    accent-color: #ef4444;
+    cursor: pointer;
+}
+
+.btn-canvas-action {
+    background: #334155;
+    border: none;
+    color: #f1f5f9;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 9px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.btn-canvas-action:hover {
+    background: #475569;
+}
+
+/* ================= FLUID LIQUID WATER WAVE ANIMATION ================= */
+
+.progress-bar-fill {
+    background: linear-gradient(
+        45deg,
+        rgba(2, 132, 199, 1) 25%,
+        rgba(56, 189, 248, 1) 25%,
+        rgba(56, 189, 248, 1) 50%,
+        rgba(2, 132, 199, 1) 50%,
+        rgba(2, 132, 199, 1) 75%,
+        rgba(56, 189, 248, 1) 75%,
+        rgba(56, 189, 248, 1) 100%
+    ) !important;
+    background-size: 28px 28px !important;
+    animation: waveLiquid 2s linear infinite;
+    position: relative;
+}
+
+@keyframes waveLiquid {
+    0% { background-position: 0 0; }
+    100% { background-position: 28px 0; }
+}
+
+/* ================= 3D CARD PERSPECTIVE TILT ================= */
+
+.tracker-card, .calc-card, .article-card {
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.4, 1), box-shadow 0.25s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.tracker-card:hover, .calc-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Keyframe Animations */
+@keyframes floatLevitate {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes heartBeatScale {
+    0%, 100% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.22);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.18);
+    }
+    70% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    70% {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
 }

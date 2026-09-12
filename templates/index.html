@@ -112,12 +112,15 @@
                 <div class="chat-container">
                     <div class="chat-header">
                         <div class="chat-bot-info">
-                            <div class="bot-avatar">
-                                <span>🤖</span>
+                            <div class="bot-avatar bot-avatar-3d">
+                                <img src="/static/images/carebot_3d_avatar.jpg" alt="CareBot 3D" class="avatar-3d-img">
                                 <span class="avatar-status"></span>
                             </div>
                             <div>
-                                <h2>CareBot Health Advisor</h2>
+                                <div class="title-with-badge">
+                                    <h2>CareBot Health Advisor</h2>
+                                    <span class="badge-3d">3D AI COMPANION</span>
+                                </div>
                                 <p>Empathetic discussions for symptoms, nutrition, sleep & wellbeing</p>
                             </div>
                         </div>
@@ -160,7 +163,9 @@
                     <!-- Messages Feed -->
                     <div class="chat-messages" id="chatMessages">
                         <div class="message bot-msg">
-                            <div class="msg-avatar">🤖</div>
+                            <div class="msg-avatar msg-avatar-3d">
+                                <img src="/static/images/carebot_3d_avatar.jpg" alt="CareBot 3D">
+                            </div>
                             <div class="msg-content">
                                 <p><strong>Hello! I'm CareBot, your personalized health and wellness companion.</strong></p>
                                 <p>How are you feeling today? You can ask me about everyday symptoms (like headaches, colds, digestive discomfort), sleep hygiene, nutrition, fitness, hydration, or stress relief methods!</p>
@@ -195,6 +200,50 @@
                 <div class="pane-header">
                     <h2>Daily Wellness Tracker</h2>
                     <p>Track your essential daily vitality metrics for lasting health</p>
+                </div>
+
+                <!-- 3D Vitality & Interactive Canvas Hero Section -->
+                <div class="dashboard-hero-3d">
+                    <div class="hero-3d-left">
+                        <div class="hero-3d-banner-img-wrap">
+                            <img src="/static/images/wellness_3d_hero.jpg" alt="3D Wellness Art" class="hero-3d-img">
+                            <div class="hero-overlay-tag">
+                                <span class="pulse-dot"></span> 3D Vitality Engine
+                            </div>
+                        </div>
+                        <div class="hero-3d-content">
+                            <h3>Real-time Body & Vitality Monitor</h3>
+                            <p>Explore your biological rhythm in 3D. Daily hydration, steps, and restful sleep power your cardiovascular system and cellular recovery.</p>
+                            <div class="hero-mini-badges">
+                                <span class="mini-badge">🩺 Sinus Rhythm: Normal</span>
+                                <span class="mini-badge">⚡ Cellular Vitality: Optimal</span>
+                                <span class="mini-badge">💧 Hydration: Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Three.js 3D Beating Heart Canvas -->
+                    <div class="hero-3d-right">
+                        <div class="canvas-header-bar">
+                            <div class="ecg-badge">
+                                <span class="heart-icon-anim">❤️</span>
+                                <span id="bpmDisplay">72 BPM</span>
+                            </div>
+                            <span class="rotate-hint">🖱️ Drag to rotate 3D</span>
+                        </div>
+                        <div class="three-canvas-container" id="threeHeartContainer">
+                            <!-- Three.js Canvas Injected Here -->
+                            <div class="canvas-loading" id="canvasLoading">Initializing 3D Engine...</div>
+                        </div>
+                        <div class="canvas-controls-bar">
+                            <div class="bpm-control">
+                                <label for="bpmSlider">Pace:</label>
+                                <input type="range" id="bpmSlider" min="50" max="130" value="72" oninput="changeHeartBPM(this.value)">
+                            </div>
+                            <button class="btn-canvas-action" onclick="resetHeartAngle()">Reset Angle</button>
+                            <button class="btn-canvas-action" onclick="toggleWireframe()">Mesh Mode</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="dashboard-grid">
@@ -551,6 +600,8 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
+    <!-- Three.js 3D Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
 </html>
