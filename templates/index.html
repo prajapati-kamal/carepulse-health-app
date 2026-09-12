@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarePulse - Health Companion & AI Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        <path d="M12 5v14"/>
+                        <path d="M5 12h14"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">CarePulse</span>
+                    <span class="brand-subtitle">Health & Wellness</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="chat">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        <path d="M8 10h.01"/>
+                        <path d="M12 10h.01"/>
+                        <path d="M16 10h.01"/>
+                    </svg>
+                    <span>Health Chatbot</span>
+                    <span class="nav-badge">AI</span>
+                </button>
+
+                <button class="nav-item" data-tab="dashboard">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="7" height="9" x="3" y="3" rx="1"/>
+                        <rect width="7" height="5" x="14" y="3" rx="1"/>
+                        <rect width="7" height="9" x="14" y="12" rx="1"/>
+                        <rect width="7" height="5" x="3" y="16" rx="1"/>
+                    </svg>
+                    <span>Daily Tracker</span>
+                </button>
+
+                <button class="nav-item" data-tab="calculators">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="16" height="20" x="4" y="2" rx="2"/>
+                        <line x1="8" x2="16" y1="6" y2="6"/>
+                        <line x1="16" x2="16" y1="14" y2="18"/>
+                        <path d="M16 10h.01"/>
+                        <path d="M12 10h.01"/>
+                        <path d="M8 10h.01"/>
+                        <path d="M12 14h.01"/>
+                        <path d="M8 14h.01"/>
+                        <path d="M12 18h.01"/>
+                        <path d="M8 18h.01"/>
+                    </svg>
+                    <span>Calculators</span>
+                </button>
+
+                <button class="nav-item" data-tab="medications">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
+                        <path d="m8.5 8.5 7 7"/>
+                    </svg>
+                    <span>Medications</span>
+                </button>
+
+                <button class="nav-item" data-tab="wellness">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+                        <path d="M6 6h10"/>
+                        <path d="M6 10h10"/>
+                    </svg>
+                    <span>First Aid & Guides</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="emergency-pill-btn" onclick="openEmergencyModal()">
+                    <span class="emergency-pulse"></span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <span>Emergency SOS</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-header">
+                <div class="header-status">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">Health Companion Online</span>
+                </div>
+                <div class="header-actions">
+                    <div class="date-badge" id="currentDateDisplay">Today</div>
+                </div>
+            </header>
+
+            <!-- TAB 1: CHATBOT -->
+            <section id="tab-chat" class="tab-pane active">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-bot-info">
+                            <div class="bot-avatar">
+                                <span>🤖</span>
+                                <span class="avatar-status"></span>
+                            </div>
+                            <div>
+                                <h2>CareBot Health Advisor</h2>
+                                <p>Empathetic discussions for symptoms, nutrition, sleep & wellbeing</p>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn-secondary btn-sm" onclick="clearChat()">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18"/>
+                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                                </svg>
+                                Clear Chat
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Medical Disclaimer Alert -->
+                    <div class="disclaimer-banner">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <span><strong>Medical Disclaimer:</strong> CareBot offers general health & wellness guidance. It does not replace clinical diagnosis or emergency medical care.</span>
+                    </div>
+
+                    <!-- Quick Prompt Suggestions Chips -->
+                    <div class="quick-prompts-wrapper">
+                        <span class="prompts-label">Popular Topics:</span>
+                        <div class="quick-prompts" id="quickPrompts">
+                            <button class="chip" onclick="sendQuickPrompt('What are natural ways to relieve a tension headache?')">🤕 Headache Relief</button>
+                            <button class="chip" onclick="sendQuickPrompt('How can I fall asleep faster and improve sleep quality?')">🌙 Better Sleep</button>
+                            <button class="chip" onclick="sendQuickPrompt('How much water should I drink every day?')">💧 Daily Hydration</button>
+                            <button class="chip" onclick="sendQuickPrompt('What should I eat for a balanced, energizing breakfast?')">🥗 Healthy Diet</button>
+                            <button class="chip" onclick="sendQuickPrompt('Tips for soothing a cold and sore throat')">🍵 Cold & Sore Throat</button>
+                            <button class="chip" onclick="sendQuickPrompt('Teach me the 4-7-8 breathing technique for stress relief')">🧘 Stress Relief</button>
+                            <button class="chip" onclick="sendQuickPrompt('How to relieve neck and back stiffness from desk work?')">💻 Desk Posture</button>
+                        </div>
+                    </div>
+
+                    <!-- Messages Feed -->
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-msg">
+                            <div class="msg-avatar">🤖</div>
+                            <div class="msg-content">
+                                <p><strong>Hello! I'm CareBot, your personalized health and wellness companion.</strong></p>
+                                <p>How are you feeling today? You can ask me about everyday symptoms (like headaches, colds, digestive discomfort), sleep hygiene, nutrition, fitness, hydration, or stress relief methods!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typing Indicator (Hidden by default) -->
+                    <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <span>CareBot is thinking...</span>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <form class="chat-input-bar" id="chatForm" onsubmit="handleChatSubmit(event)">
+                        <input type="text" id="chatInput" placeholder="Ask any health question... (e.g., 'What can I do for a sore throat?')" autocomplete="off" required>
+                        <button type="submit" class="send-btn" id="sendBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                            <span>Send</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB 2: DAILY TRACKER -->
+            <section id="tab-dashboard" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Daily Wellness Tracker</h2>
+                    <p>Track your essential daily vitality metrics for lasting health</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Water Intake Card -->
+                    <div class="tracker-card water-card">
+                        <div class="card-top">
+                            <div class="card-icon water-icon">💧</div>
+                            <div class="card-info">
+                                <h3>Hydration Tracker</h3>
+                                <p class="card-sub"><span id="waterCount">0</span> / <span id="waterGoal">2500</span> ml</p>
+                            </div>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="waterProgress" style="width: 0%;"></div>
+                        </div>
+                        <div class="water-cups-visual" id="waterCupsVisual">
+                            <!-- Dynamically generated cup icons -->
+                        </div>
+                        <div class="tracker-btn-row">
+                            <button class="btn-quick" onclick="addWater(250)">+250 ml (1 Cup)</button>
+                            <button class="btn-quick" onclick="addWater(500)">+500 ml (Bottle)</button>
+                            <button class="btn-quick btn-outline" onclick="resetWater()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Steps & Activity Card -->
+                    <div class="tracker-card steps-card">
+                        <div class="card-top">
+                            <div class="card-icon steps-icon">👟</div>
+                            <div class="card-info">
+                                <h3>Daily Steps</h3>
+                                <p class="card-sub"><span id="stepCount">0</span> / <span id="stepGoal">8000</span> steps</p>
+                            </div>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill steps-fill" id="stepProgress" style="width: 0%;"></div>
+                        </div>
+                        <div class="input-inline-group">
+                            <label for="stepInput">Log Steps:</label>
+                            <input type="number" id="stepInput" min="0" max="100000" placeholder="e.g. 5200">
+                            <button class="btn-primary btn-sm" onclick="saveSteps()">Save</button>
+                        </div>
+                        <div class="step-quick-tags">
+                            <button class="tag-btn" onclick="addSteps(1000)">+1,000</button>
+                            <button class="tag-btn" onclick="addSteps(2500)">+2,500</button>
+                            <button class="tag-btn" onclick="addSteps(5000)">+5,000</button>
+                        </div>
+                    </div>
+
+                    <!-- Sleep Tracker Card -->
+                    <div class="tracker-card sleep-card">
+                        <div class="card-top">
+                            <div class="card-icon sleep-icon">🌙</div>
+                            <div class="card-info">
+                                <h3>Sleep Duration</h3>
+                                <p class="card-sub"><span id="sleepDisplay">0.0</span> hrs of rest</p>
+                            </div>
+                        </div>
+                        <div class="sleep-slider-wrapper">
+                            <input type="range" id="sleepSlider" min="0" max="14" step="0.5" value="7.5" oninput="updateSleepSliderLabel(this.value)">
+                            <div class="slider-labels">
+                                <span>0 hrs</span>
+                                <span id="sliderValueLabel" class="highlight-val">7.5 hrs</span>
+                                <span>14 hrs</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary btn-block" onclick="saveSleep()">Update Sleep Record</button>
+                    </div>
+
+                    <!-- Daily Mood & Wellbeing -->
+                    <div class="tracker-card mood-card">
+                        <div class="card-top">
+                            <div class="card-icon mood-icon">✨</div>
+                            <div class="card-info">
+                                <h3>Mood & Feeling</h3>
+                                <p class="card-sub">Current: <span id="currentMoodBadge" class="mood-badge">Good 🙂</span></p>
+                            </div>
+                        </div>
+                        <div class="mood-selector">
+                            <button class="mood-btn" onclick="selectMood('great', 'Great 😄')">😄<br><span>Great</span></button>
+                            <button class="mood-btn active" onclick="selectMood('good', 'Good 🙂')">🙂<br><span>Good</span></button>
+                            <button class="mood-btn" onclick="selectMood('tired', 'Tired 🥱')">🥱<br><span>Tired</span></button>
+                            <button class="mood-btn" onclick="selectMood('stressed', 'Stressed 😰')">😰<br><span>Stressed</span></button>
+                            <button class="mood-btn" onclick="selectMood('sick', 'Unwell 🤒')">🤒<br><span>Unwell</span></button>
+                        </div>
+                        <p class="mood-tip" id="moodTip">Feeling good today! Keep momentum going with steady hydration.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: CALCULATORS -->
+            <section id="tab-calculators" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Interactive Health Calculators</h2>
+                    <p>Accurate clinical estimates for BMI, daily hydration, and blood pressure</p>
+                </div>
+
+                <div class="calc-grid">
+                    <!-- BMI Calculator -->
+                    <div class="calc-card">
+                        <div class="calc-header">
+                            <div class="calc-icon">⚖️</div>
+                            <div>
+                                <h3>BMI & Weight Checker</h3>
+                                <p>Calculate Body Mass Index & healthy target weight</p>
+                            </div>
+                        </div>
+                        <form id="bmiForm" onsubmit="calculateBMI(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bmiHeight">Height (cm)</label>
+                                    <input type="number" id="bmiHeight" min="50" max="250" placeholder="175" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bmiWeight">Weight (kg)</label>
+                                    <input type="number" id="bmiWeight" min="20" max="300" step="0.5" placeholder="70" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary btn-block">Calculate BMI</button>
+                        </form>
+                        <div id="bmiResult" class="calc-result" style="display: none;">
+                            <div class="result-highlight">
+                                <div>BMI: <strong id="bmiVal">--</strong></div>
+                                <div id="bmiCategoryBadge" class="cat-badge">--</div>
+                            </div>
+                            <div class="ideal-range">Ideal Weight Range: <span id="bmiIdealRange">--</span></div>
+                            <p class="result-advice" id="bmiAdvice"></p>
+                        </div>
+                    </div>
+
+                    <!-- Water & Calorie Estimator -->
+                    <div class="calc-card">
+                        <div class="calc-header">
+                            <div class="calc-icon">🔥</div>
+                            <div>
+                                <h3>Daily Calories & Water Needs</h3>
+                                <p>Personalized hydration and TDEE maintenance calories</p>
+                            </div>
+                        </div>
+                        <form id="waterCalForm" onsubmit="calculateWaterCal(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="wcWeight">Weight (kg)</label>
+                                    <input type="number" id="wcWeight" min="20" max="250" placeholder="70" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wcAge">Age</label>
+                                    <input type="number" id="wcAge" min="10" max="110" placeholder="28" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="wcGender">Gender</label>
+                                    <select id="wcGender">
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wcActivity">Activity Level</label>
+                                    <select id="wcActivity">
+                                        <option value="sedentary">Sedentary (Desk Job)</option>
+                                        <option value="light">Lightly Active (1-3 days/wk)</option>
+                                        <option value="moderate" selected>Moderately Active (3-5 days/wk)</option>
+                                        <option value="active">Very Active (6-7 days/wk)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary btn-block">Calculate Daily Needs</button>
+                        </form>
+                        <div id="wcResult" class="calc-result" style="display: none;">
+                            <div class="result-columns">
+                                <div class="res-col">
+                                    <span class="res-lbl">Daily Water Target</span>
+                                    <strong class="res-val" id="resWater">-- ml</strong>
+                                    <span class="res-sub" id="resCups">-- cups</span>
+                                </div>
+                                <div class="res-col">
+                                    <span class="res-lbl">Est. Maintenance Calories</span>
+                                    <strong class="res-val" id="resCalories">-- kcal</strong>
+                                    <span class="res-sub" id="resBMR">BMR: --</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blood Pressure Interpreter -->
+                    <div class="calc-card">
+                        <div class="calc-header">
+                            <div class="calc-icon">🩺</div>
+                            <div>
+                                <h3>Blood Pressure Interpreter</h3>
+                                <p>AHA guidelines for Systolic & Diastolic readings</p>
+                            </div>
+                        </div>
+                        <form id="bpForm" onsubmit="calculateBP(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bpSystolic">Systolic (Upper mm Hg)</label>
+                                    <input type="number" id="bpSystolic" min="60" max="250" placeholder="120" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bpDiastolic">Diastolic (Lower mm Hg)</label>
+                                    <input type="number" id="bpDiastolic" min="40" max="160" placeholder="80" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary btn-block">Evaluate Blood Pressure</button>
+                        </form>
+                        <div id="bpResult" class="calc-result" style="display: none;">
+                            <div class="result-highlight">
+                                <div>Reading: <strong id="bpReadingVal">-- / --</strong></div>
+                                <div id="bpCategoryBadge" class="cat-badge">--</div>
+                            </div>
+                            <p class="result-advice" id="bpAdvice"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: MEDICATIONS -->
+            <section id="tab-medications" class="tab-pane">
+                <div class="pane-header">
+                    <h2>Medication & Supplement Schedule</h2>
+                    <p>Keep track of your daily prescriptions, vitamins, and supplements</p>
+                </div>
+
+                <div class="meds-layout">
+                    <!-- Add Medication Form -->
+                    <div class="med-form-card">
+                        <h3>Add New Reminder</h3>
+                        <form id="medForm" onsubmit="handleAddMedication(event)">
+                            <div class="form-group">
+                                <label for="medName">Medication / Supplement Name</label>
+                                <input type="text" id="medName" placeholder="e.g. Vitamin D3 or Amoxicillin" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="medDosage">Dosage</label>
+                                    <input type="text" id="medDosage" placeholder="e.g. 1000 IU or 500mg">
+                                </div>
+                                <div class="form-group">
+                                    <label for="medTime">Scheduled Time</label>
+                                    <input type="time" id="medTime" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary btn-block">Add to Schedule</button>
+                        </form>
+                    </div>
+
+                    <!-- Medication List -->
+                    <div class="med-list-card">
+                        <div class="med-list-header">
+                            <h3>Today's Schedule</h3>
+                            <span class="med-counter" id="medProgressCount">0 of 0 taken</span>
+                        </div>
+                        <div class="med-list" id="medList">
+                            <div class="empty-state">No medications or vitamins added for today. Add one using the form!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: WELLNESS & FIRST AID -->
+            <section id="tab-wellness" class="tab-pane">
+                <div class="pane-header">
+                    <h2>First Aid & Health Library</h2>
+                    <p>Evidence-backed guides for common conditions, first-aid, and recovery</p>
+                </div>
+
+                <!-- Emergency Contacts Banner -->
+                <div class="emergency-contact-box">
+                    <div class="emergency-head">
+                        <div class="em-icon">📞</div>
+                        <div>
+                            <h3>Emergency Helplines Directory</h3>
+                            <p>Immediate phone lines for medical crises, poison control, and mental health</p>
+                        </div>
+                    </div>
+                    <div class="emergency-numbers-grid">
+                        <div class="em-item">
+                            <span class="em-country">United States & Canada</span>
+                            <strong>911</strong>
+                            <span class="em-desc">Ambulance & Emergency</span>
+                        </div>
+                        <div class="em-item">
+                            <span class="em-country">United Kingdom</span>
+                            <strong>999 / 111</strong>
+                            <span class="em-desc">Emergency / NHS Non-urgent</span>
+                        </div>
+                        <div class="em-item">
+                            <span class="em-country">European Union & India</span>
+                            <strong>112 / 108</strong>
+                            <span class="em-desc">Unified Helpline / Ambulance</span>
+                        </div>
+                        <div class="em-item">
+                            <span class="em-country">Crisis & Suicide Lifeline</span>
+                            <strong>988</strong>
+                            <span class="em-desc">24/7 Free & Confidential</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Articles Grid -->
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- Populated via JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Emergency SOS Modal -->
+    <div class="modal-backdrop" id="emergencyModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <span class="modal-alert-icon">🚨</span>
+                    <h3>Emergency Medical Assistance</h3>
+                </div>
+                <button class="close-btn" onclick="closeEmergencyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>If you or someone near you is experiencing severe symptoms, please call emergency services immediately:</p>
+                <div class="emergency-call-options">
+                    <a href="tel:911" class="call-btn btn-danger">
+                        <span>Call 911</span>
+                        <small>US / Canada</small>
+                    </a>
+                    <a href="tel:112" class="call-btn btn-danger">
+                        <span>Call 112</span>
+                        <small>Europe / India</small>
+                    </a>
+                    <a href="tel:988" class="call-btn btn-warning">
+                        <span>Call 988</span>
+                        <small>Mental Health Lifeline</small>
+                    </a>
+                </div>
+                <div class="urgent-symptoms-list">
+                    <h4>Critical Warning Signs (Seek ER immediately):</h4>
+                    <ul>
+                        <li>Chest pressure, squeezing, or pain radiating to jaw or left arm</li>
+                        <li>Sudden difficulty breathing or choking</li>
+                        <li>Sudden numbness, weakness on one side of face/body</li>
+                        <li>Sudden confusion or inability to speak</li>
+                        <li>Uncontrollable bleeding or severe head trauma</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeEmergencyModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
