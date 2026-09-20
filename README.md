@@ -2,6 +2,8 @@
 
 A modern, responsive Health & Wellness web application featuring an interactive **AI Health Chatbot ("CareBot")**, **hardware-accelerated 3D graphics (Three.js)**, **daily vitality trackers**, and **clinical calculators**.
 
+> 🌐 **Live Demo:** [https://carepulse-health-app.onrender.com](https://carepulse-health-app.onrender.com)
+
 ---
 
 ## 🌟 Key Features
@@ -80,7 +82,9 @@ python test_app.py
 
 ## ☁️ Deployment
 
-### Deploy on Render.com (Free)
+- 🌐 **Live Web App:** [https://carepulse-health-app.onrender.com](https://carepulse-health-app.onrender.com)
+
+### Deploying on Render.com (Instructions)
 1. Fork or push this repository to GitHub.
 2. Sign up at [render.com](https://render.com) and create a **New Web Service**.
 3. Connect your repository.
